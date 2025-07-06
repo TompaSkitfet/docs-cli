@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"sort"
 
 	"gopkg.in/yaml.v3"
 )
@@ -43,10 +45,6 @@ func loadConfig(path string) (*config, error) {
 
 func main() {
 	cfgPath := defaultConfigPath()
-	if len(os.Args) > 1 && os.Args[1] == "--config" {
-		fmt.Println(cfgPath)
-		return
-	}
 
 	cfg, err := loadConfig(cfgPath)
 	if err != nil {
@@ -54,8 +52,36 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println("Följande språk finns:")
-	for l := range cfg.Links {
-		fmt.Println("•", l)
+	aliasMap := make(map[string]string)
+	for key, entry := range cfg.Links {
+		aliasMap[key] = entry.URL
+		for _, a := range entry.Aliases {
+			aliasMap[a] = entry.URL
+		}
 	}
+
+	if len(os.Args) < 2 || os.Args[1] == "--help" {
+		fmt.Println("docs <språk>  – öppna officiell dokumentation i webbläsaren")
+		fmt.Println("docs --help   – denna hjälp")
+		fmt.Println("Tillgängliga språk:")
+		keys := make([]string, 0, len(cfg.Links))
+		for k := range cfg.Links {
+			keys = append(keys, k)
+		}
+		sort.Strings(keys)
+		for _, k := range keys {
+			fmt.Println("  ", k)
+		}
+		return
+	}
+
+	lang := os.Args[1]
+	url, ok := aliasMap[lang]
+	if !ok {
+		fmt.Printf("🚫 okänt språk: %s\nKör  docs --help  för lista.\n", lang)
+		os.Exit(1)
+	}
+
+	_ = exec.Command("xdg-open", url).Start()
+	_ = exec.Command("i3-msg", "workspace", cfg.Workspace.Web).Run()
 }
