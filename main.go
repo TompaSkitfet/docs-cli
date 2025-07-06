@@ -10,6 +10,9 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+//go:embed config.yml
+var embeddedConfig []byte
+
 type linkEntry struct {
 	URL     string   `yaml:"url"`
 	Aliases []string `yaml:"aliases"`
@@ -46,9 +49,14 @@ func loadConfig(path string) (*config, error) {
 func main() {
 	cfgPath := defaultConfigPath()
 
+	if _, err := os.Stat(cfgPath); os.IsNotExist(err) {
+		_ = os.MkdirAll(filepath.Dir(cfgPath), 0o755)
+		_ = os.WriteFile(cfgPath, embeddedConfig, 0o644)
+	}
+
 	cfg, err := loadConfig(cfgPath)
 	if err != nil {
-		fmt.Println("❌ kunde inte läsa %s:\n%v\n", cfgPath, err)
+		fmt.Printf("❌ kunde inte läsa %s:\n%v\n", cfgPath, err)
 		os.Exit(1)
 	}
 
