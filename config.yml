@@ -1,0 +1,50 @@
+workspace:
+  wm: i3
+  web: 3:
+
+links:
+  go:
+    url: "https://go.dev/doc/"
+    aliases: [golang, gol]
+  python:
+    url: "https://docs.python.org/3/"
+    aliases: [py, py3]
+  javascript:
+    url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript"
+    aliases: [js, node, nodejs]
+  typescript:
+    url: "https://www.typescriptlang.org/docs/"
+    aliases: [ts]
+  java:
+    url: "https://docs.oracle.com/en/java/javase/21/docs/"
+    aliases: [jdk, jvm]
+  csharp:
+    url: "https://learn.microsoft.com/dotnet/csharp/"
+    aliases: [c#, dotnet, cs]
+  c:
+    url: "https://en.cppreference.com/w/c"
+    aliases: []
+  cpp:
+    url: "https://en.cppreference.com/w/cpp"
+    aliases: [c++, cxx]
+  rust:
+    url: "https://doc.rust-lang.org/"
+    aliases: [rs]
+  php:
+    url: "https://www.php.net/docs.php"
+    aliases: []
+  ruby:
+    url: "https://ruby-doc.org/core/"
+    aliases: [rb]
+  swift:
+    url: "https://docs.swift.org/swift-book/documentation/the-swift-programming-language/"
+    aliases: []
+  kotlin:
+    url: "https://kotlinlang.org/docs/home.html"
+    aliases: [kt]
+  bash:
+    url: "https://www.gnu.org/software/bash/manual/bash.html"
+    aliases: [sh]
+  zsh:
+    url: "https://zsh.sourceforge.io/Doc/"
+    aliases: []
